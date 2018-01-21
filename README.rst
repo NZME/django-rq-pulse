@@ -5,18 +5,10 @@ Django RQ Pulse
 .. image:: https://badge.fury.io/py/django-rq-pulse.svg
     :target: https://badge.fury.io/py/django-rq-pulse
 
-.. image:: https://travis-ci.org/medhatgayed/django-rq-pulse.svg?branch=master
-    :target: https://travis-ci.org/medhatgayed/django-rq-pulse
-
-.. image:: https://codecov.io/gh/medhatgayed/django-rq-pulse/branch/master/graph/badge.svg
-    :target: https://codecov.io/gh/medhatgayed/django-rq-pulse
+.. image:: https://travis-ci.org/NZME/django-rq-pulse.svg?branch=master
+    :target: https://travis-ci.org/NZME/django-rq-pulse
 
 A Django package to check that rq workers are running and notify admins if they are not
-
-Documentation
--------------
-
-The full documentation is at https://django-rq-pulse.readthedocs.io.
 
 Quickstart
 ----------
