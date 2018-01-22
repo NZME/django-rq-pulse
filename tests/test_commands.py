@@ -8,12 +8,29 @@ from django.conf import settings
 from django_rq_pulse.management.commands import rq_pulse_check
 
 @mock.patch.object(rq_pulse_check, 'send_mail')
+@mock.patch.object(rq_pulse_check, 'Worker')
+@mock.patch.object(rq_pulse_check, 'Queue')
+@mock.patch.object(rq_pulse_check, 'Redis', mock.MagicMock())
 @mock.patch.object(settings, 'DEFAULT_FROM_EMAIL', 'sample_from@email.com')
 @mock.patch.object(settings, 'ADMINS', ['sample_admin@email.com'])
 class RQPulseCheckTestCase(TestCase):
-    def test_number_of_workers_is_not_expected(self, mock_send_mail):
+    def test_number_of_workers_is_not_expected(self, mock_queue, mock_worker, mock_send_mail):
+        mock_worker.all.return_value = []
         call_command('rq_pulse_check')
         mock_send_mail.assert_called_with(
             'WARNING: RQ Workers maybe down!', 
             'The number of workers 0 does not equal the expected number 2. Workers maybe down.', 
             'sample_from@email.com', ['sample_admin@email.com'])
+
+        mock_worker.all.return_value = [mock.MagicMock()]
+        call_command('rq_pulse_check')
+        mock_send_mail.assert_called_with(
+            'WARNING: RQ Workers maybe down!', 
+            'The number of workers 1 does not equal the expected number 2. Workers maybe down.', 
+            'sample_from@email.com', ['sample_admin@email.com'])
+
+    
+    def test_number_of_workers_is_expected(self, mock_queue, mock_worker, mock_send_mail):
+        mock_worker.all.return_value = [mock.MagicMock(), mock.MagicMock()]
+        call_command('rq_pulse_check')
+        self.assertFalse(mock_send_mail.called)
