@@ -27,24 +27,26 @@ Add it to your `INSTALLED_APPS`:
         ...
     )
 
-Add Django RQ Pulse's URL patterns:
+Usage
+--------
 
 .. code-block:: python
 
-    from django_rq_pulse import urls as django_rq_pulse_urls
+    # Check that rqworkers are running.
+    python manage.py rq_pulse_check
 
+    # The above command will run with default parameters where
+    # --expected-num-workers=2
+    # --seconds-to-sleep=5
+    # --num-retries=5
+    # --queue-name="default"
 
-    urlpatterns = [
-        ...
-        url(r'^', include(django_rq_pulse_urls)),
-        ...
-    ]
+    # You can override these values by passing any or all the parameters to the command like so:
+    python manage.py rq_pulse_check --expected-num-workers=3 --queue-name="high"
 
-Features
---------
-
-* TODO
-
+    # To get a list of the command parameters use the --help parameter.
+    python manage.py rq_pulse_check --help
+    
 Running Tests
 -------------
 
