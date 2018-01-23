@@ -19,20 +19,21 @@ Install Django RQ Pulse::
 
 Add it to your `INSTALLED_APPS`:
 
-.. code-block:: python
-
+```python
     INSTALLED_APPS = (
         ...
         'django_rq_pulse.apps.DjangoRqPulseConfig',
         ...
     )
+```
 
 Usage
 --------
 
-.. code-block:: python
-
+```python
     # Check that rqworkers are running.
+    # If the actual number of workers is not equal the expected number of workers or
+    # If there are items in the queue but the queue size is not changing notify admins by email.
     python manage.py rq_pulse_check
 
     # The above command will run with default parameters where
@@ -46,6 +47,7 @@ Usage
 
     # To get a list of the command parameters use the --help parameter.
     python manage.py rq_pulse_check --help
+```
     
 Running Tests
 -------------
