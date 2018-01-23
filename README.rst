@@ -27,27 +27,32 @@ Add it to your `INSTALLED_APPS`:
         ...
     )
 
+Define the `DEFAULT_FROM_EMAIL` and `ADMINS` Django settings because these settings will be used to send notification emails.
+
 Usage
 --------
 
-.. code-block:: python
+Check that rqworkers are running::
 
-    # Check that rqworkers are running.
-    # If the actual number of workers is not equal the expected number of workers or
-    # If there are items in the queue but the queue size is not changing notify admins by email.
-    python manage.py rq_pulse_check
+    $ python manage.py rq_pulse_check
 
-    # The above command will run with default parameters where
-    # --expected-num-workers=2
-    # --seconds-to-sleep=5
-    # --num-retries=5
-    # --queue-name="default"
+If the actual number of workers is not equal the expected number of workers or
+If there are items in the queue but the queue size is not changing notify admins by email.
 
-    # You can override these values by passing any or all the parameters to the command like so:
-    `python manage.py rq_pulse_check --expected-num-workers=3 --queue-name="high"`
+The above command will run with default parameters where::
 
-    # To get a list of the command parameters use the --help parameter.
-    `python manage.py rq_pulse_check --help`
+    --expected-num-workers=2
+    --seconds-to-sleep=5
+    --num-retries=5
+    --queue-name="default"
+
+You can override these values by passing any or all the parameters to the command like so::
+
+    $ python manage.py rq_pulse_check --expected-num-workers=3 --queue-name="high"
+
+To get a list of the command parameters use the --help parameter::
+
+    $ python manage.py rq_pulse_check --help
     
 Running Tests
 -------------
