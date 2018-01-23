@@ -44,10 +44,10 @@ Usage
     # --queue-name="default"
 
     # You can override these values by passing any or all the parameters to the command like so:
-    python manage.py rq_pulse_check \-\-expected-num-workers=3 \-\-queue-name="high"
+    `python manage.py rq_pulse_check --expected-num-workers=3 --queue-name="high"`
 
     # To get a list of the command parameters use the --help parameter.
-    python manage.py rq_pulse_check --help
+    `python manage.py rq_pulse_check --help`
     
 Running Tests
 -------------
