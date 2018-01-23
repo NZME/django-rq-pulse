@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 from django.core.management import call_command
 from django.test import TestCase
-import mock
 from django.conf import settings
+import mock
 from django_rq_pulse.management.commands import rq_pulse_check
+
 
 @mock.patch.object(rq_pulse_check, 'time')
 @mock.patch.object(rq_pulse_check, 'log')
