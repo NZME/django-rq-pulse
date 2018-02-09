@@ -44,7 +44,8 @@ class Command(BaseCommand):
         self.num_retries = options['num_retries']
         self.queue_name = options['queue_name']
         
-        redis_conn = Redis()
+        redis_db = getattr(settings, 'REDIS_DB', {'host': 'localhost', 'port': 6379, 'database': 0})
+        redis_conn = Redis(host=redis_db['host'], port=int(redis_db['port']), db=int(redis_db['database']))
 
         # Check the number of workers is as expected and notify otherwise
         workers = Worker.all(connection=redis_conn)
