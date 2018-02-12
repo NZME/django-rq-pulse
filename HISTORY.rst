@@ -3,10 +3,15 @@
 History
 -------
 
+0.1.4 (2018-02-13)
+++++++++++++++++++
+
+* Use the built in mail_admins Django function instead of send_mail.
+
 0.1.3 (2018-02-12)
 ++++++++++++++++++
 
-* Add commands to Makefile to simplify the package build and release process
+* Add commands to Makefile to simplify the package build and release process.
 
 0.1.2 (2018-02-12)
 ++++++++++++++++++
