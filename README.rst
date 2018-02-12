@@ -27,7 +27,7 @@ Add it to your `INSTALLED_APPS`:
         ...
     )
 
-Define the `DEFAULT_FROM_EMAIL` and `ADMINS` Django settings because these settings will be used to send notification emails.
+Define the `SERVER_EMAIL` and `ADMINS` Django settings because these settings will be used to send notification emails.
 
 Define a dictionary in your Django settings for your Redis connection details like so::
 

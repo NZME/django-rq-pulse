@@ -8,7 +8,7 @@ import time
 from rq import Queue, Worker
 from redis import Redis
 from django.core.management.base import BaseCommand
-from django.core.mail import send_mail
+from django.core.mail import mail_admins
 from django.conf import settings
 
 
@@ -82,7 +82,7 @@ class Command(BaseCommand):
         """Given a subject and a message, send an email to ADMINS."""
         log.info(subject)
         log.info(message)
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, settings.ADMINS)
+        mail_admins(subject, message)
 
     def sleep_and_check(self):
         """Sleep for a number of seconds then check if the queue size has changed."""
