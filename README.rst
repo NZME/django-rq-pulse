@@ -47,9 +47,12 @@ Check that rqworkers are running::
 If the actual number of workers is not equal the expected number of workers or
 If there are items in the queue but the queue size is not changing notify admins by email.
 
+'--minimum-num-workers [value]' will report whether a minimum number is running rather than an exact number.
+
 The above command will run with default parameters where::
 
     --expected-num-workers=2
+    --minimum-num-workers=0
     --seconds-to-sleep=5
     --num-retries=5
     --queue-name="default"

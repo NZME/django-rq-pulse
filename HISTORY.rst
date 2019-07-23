@@ -3,6 +3,11 @@
 History
 -------
 
+0.1.5 (2019-07-23)
+++++++++++++++++++
+
+* Add argument --minimum-expected-workers [value], for when workers are not expected to be a constant value.
+
 0.1.4 (2018-02-13)
 ++++++++++++++++++
 

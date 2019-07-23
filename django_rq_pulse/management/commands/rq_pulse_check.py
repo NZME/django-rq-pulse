@@ -23,11 +23,14 @@ class Command(BaseCommand):
     If the queue has items but its size does not change over time 
     then it is likely that the workers are down so we notify admins.
     """
+    WORKERS_DOWN_SUBJECT = 'WARNING: RQ Workers maybe down!'
 
     def add_arguments(self, parser):
         """Add command arguments."""
         parser.add_argument('--expected-num-workers', dest='expected_num_workers', type=int, default=2, 
                             help='The expected number of running workers.')
+        parser.add_argument('--minimum-num-workers', dest='minimum_num_workers', type=int, default=0, 
+                            help='The minimum number of running workers. Cannot be used in conjunction with expected_num_workers.')
         parser.add_argument('--seconds-to-sleep', dest='seconds_to_sleep', type=int, default=5, 
                             help='The number of seconds to sleep before checking the queue size.')
         parser.add_argument('--num-retries', dest='num_retries', type=int, default=5, 
@@ -39,6 +42,7 @@ class Command(BaseCommand):
         """Handle command logic."""
         log.info('Checking rq workers')
 
+        self.minimum_num_workers = options['minimum_num_workers']
         self.expected_num_workers = options['expected_num_workers']
         self.seconds_to_sleep = options['seconds_to_sleep']
         self.num_retries = options['num_retries']
@@ -50,12 +54,15 @@ class Command(BaseCommand):
         # Check the number of workers is as expected and notify otherwise
         workers = Worker.all(connection=redis_conn)
         num_workers = len(workers)
-
-        if num_workers != self.expected_num_workers:
-            subject = 'WARNING: RQ Workers maybe down!'
+        
+        if num_workers < self.minimum_num_workers:
+            message = 'The number of workers {} is less than the expected number {}. Workers may be down.'.format(
+                num_workers, self.minimum_num_workers)
+            self.notify(self.WORKERS_DOWN_SUBJECT, message)
+        elif num_workers != self.expected_num_workers:
             message = 'The number of workers {} does not equal the expected number {}. Workers maybe down.'.format(
                 num_workers, self.expected_num_workers)
-            self.notify(subject, message)
+            self.notify(self.WORKERS_DOWN_SUBJECT, message)
 
         # Check the Queue size is changing and notify otherwise
         self.q = Queue(self.queue_name, connection=redis_conn)
@@ -72,9 +79,8 @@ class Command(BaseCommand):
                     log.info('The Q size is not changing, will check again after {} seconds.'.format(self.seconds_to_sleep))
             
             if not is_q_size_changing:
-                subject = 'WARNING: RQ Workers maybe down!'
                 message = 'The Q size is not changing, this is bad. Workers maybe down.'
-                self.notify(subject, message)
+                self.notify(self.WORKERS_DOWN_SUBJECT, message)
 
         log.info('Finished checking rq workers')
 
