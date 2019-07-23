@@ -22,19 +22,32 @@ class RQPulseCheckTestCase(TestCase):
         call_command('rq_pulse_check')
         mock_mail_admins.assert_called_with(
             'WARNING: RQ Workers maybe down!', 
-            'The number of workers 0 does not equal the expected number 2. Workers maybe down.')
+            'The number of workers 0 is less than the expected number 2. Workers maybe down.')
 
         mock_worker.all.return_value = [mock.MagicMock()]
         call_command('rq_pulse_check')
         mock_mail_admins.assert_called_with(
             'WARNING: RQ Workers maybe down!', 
-            'The number of workers 1 does not equal the expected number 2. Workers maybe down.')
+            'The number of workers 1 is less than the expected number 2. Workers maybe down.')
+
+        mock_worker.all.return_value = [mock.MagicMock(), mock.MagicMock()]
+        call_command('rq_pulse_check', expected_num_workers=3)
+        mock_mail_admins.assert_called_with(
+            'WARNING: RQ Workers maybe down!', 
+            'The number of workers 2 is less than the expected number 3. Workers maybe down.')
 
     def test_number_of_workers_is_expected(
         self, mock_queue, mock_worker, mock_mail_admins, mock_log, mock_time):
-        mock_worker.all.return_value = [mock.MagicMock(), mock.MagicMock()]
+        # Number of workers is the minimum
+        mock_worker.all.return_value = [mock.MagicMock()] * 2
         call_command('rq_pulse_check')
         self.assertFalse(mock_mail_admins.called)
+
+        # Number of workers is higher than the minimum
+        mock_worker.all.return_value = [mock.MagicMock()] * 10
+        call_command('rq_pulse_check', expected_num_workers=5)
+        self.assertFalse(mock_mail_admins.called)
+
 
     def test_queue_has_no_items(
         self, mock_queue, mock_worker, mock_mail_admins, mock_log, mock_time):

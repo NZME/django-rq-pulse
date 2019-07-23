@@ -3,6 +3,11 @@
 History
 -------
 
+0.2.0 (2019-07-23)
+++++++++++++++++++
+
+* Change behaviour of --expected-num-workers to only report to admins when the number of workers are less than the expected value. Add test versions for Python 3.6 and Django 2.2.
+
 0.1.4 (2018-02-13)
 ++++++++++++++++++
 

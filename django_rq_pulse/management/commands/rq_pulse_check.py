@@ -27,7 +27,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         """Add command arguments."""
         parser.add_argument('--expected-num-workers', dest='expected_num_workers', type=int, default=2, 
-                            help='The expected number of running workers.')
+                            help='The expected minimum number of running workers.')
         parser.add_argument('--seconds-to-sleep', dest='seconds_to_sleep', type=int, default=5, 
                             help='The number of seconds to sleep before checking the queue size.')
         parser.add_argument('--num-retries', dest='num_retries', type=int, default=5, 
@@ -51,9 +51,9 @@ class Command(BaseCommand):
         workers = Worker.all(connection=redis_conn)
         num_workers = len(workers)
 
-        if num_workers != self.expected_num_workers:
+        if num_workers < self.expected_num_workers:
             subject = 'WARNING: RQ Workers maybe down!'
-            message = 'The number of workers {} does not equal the expected number {}. Workers maybe down.'.format(
+            message = 'The number of workers {} is less than the expected number {}. Workers maybe down.'.format(
                 num_workers, self.expected_num_workers)
             self.notify(subject, message)
 

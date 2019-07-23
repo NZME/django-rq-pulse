@@ -44,7 +44,7 @@ Check that rqworkers are running::
 
     $ python manage.py rq_pulse_check
 
-If the actual number of workers is not equal the expected number of workers or
+If the actual number of workers is less the expected number of workers or
 If there are items in the queue but the queue size is not changing notify admins by email.
 
 The above command will run with default parameters where::
