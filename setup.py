@@ -15,7 +15,7 @@ history = open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='django-rq-pulse',
-    version='0.1.5',
+    version='0.2.0',
     description="""A Django package to check that rq workers are running and notify admins if they are not""",
     long_description=readme + '\n\n' + history,
     author='Medhat Gayed',
